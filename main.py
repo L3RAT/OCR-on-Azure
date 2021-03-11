@@ -2,21 +2,10 @@ from fastapi import FastAPI, File, UploadFile, Header, Request, Form
 import requests, os, sys
 from pydantic import BaseModel
 from typing import Optional
-from azure.keyvault.secrets import SecretClient
-from azure.identity import DefaultAzureCredential
-from azure.core.exceptions import HttpResponseError
 
-
-vault_url = os.getenv('APPSETTING_azure_key_vault_url')
-credential = DefaultAzureCredential()
-client = SecretClient(vault_url=vault_url, credential=credential)
-
-try:
-    api_key = client.get_secret("azureCognitiveServicesAPIKey").value
-    api_version = client.get_secret("azureCognitiveServicesAPIVersion").value
-    index_name = client.get_secret("azureCognitiveServicesIndexName").value
-except HttpResponseError as e:
-    print("\nCaught an error: {0}".format(e.message))
+api_key = os.getenv('APPSETTING_azure_cognitive_services_api_key')
+api_version = os.getenv('APPSETTING_azure_cognitive_services_api_version')
+index_name = os.getenv('APPSETTING_azure_cognitive_services_index_name')
     
 app = FastAPI()
 
